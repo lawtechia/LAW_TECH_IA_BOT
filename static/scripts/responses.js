@@ -49,10 +49,10 @@ function getBotResponse(input, numPergunta) {
             headers: {
             'Content-Type': 'application/json',
             },
-            body: JSON.stringify(valida),
+            body: JSON.stringify(update),
             };
 
-        fetch('http://localhost:8080/empresas/valida', options).then(resp => console.log(resp.text())).catch(e => {console.log(e);});
+        fetch('http://localhost:8080/empresas', options).catch(e => {console.log(e);});
 
         return "Obrigado pelas informações. A LMA AI irá analisar e retorna a você em 72h! Obrigado pela preferência.";
     } 
