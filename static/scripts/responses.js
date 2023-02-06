@@ -1,5 +1,15 @@
 let resposta = {};
 
+var update = {
+    "cnpj" : "",
+    "nome_comercial" : "",
+    "email_comercial" : "",
+    "faturamento_anual" : "",
+    "regime_tributacao" : "",
+    "qtd_funcionarios" : "",
+    "folha_salarial" : ""
+};
+
 function getBotResponse(input, numPergunta) {
     
     if (numPergunta == 0){
