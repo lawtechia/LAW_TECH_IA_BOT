@@ -21,6 +21,25 @@ function getBotResponse(input, numPergunta) {
     } else if (numPergunta == 6) {
         return "Qual o valor da folha de pagamento (R$ milhões) aproximada?";
     } else if (numPergunta == 7) {
+         const update = {
+            "cnpj" : "23456789000126",
+            "nome_comercial" : "TESTANDO",
+            "email_comercial" : "",
+            "faturamento_anual" : "200000",
+            "regime_tributacao" : "REAL",
+            "qtd_funcionarios" : "29",
+            "folha_salarial" : "300000"
+        };
+
+        const options = {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(update),
+            };
+
+        fetch('http://localhost:8080/empresas', options).catch(e => {console.log(e);});
         return "Obrigado pelas informações. A LMA AI irá analisar e retorna a você em 72h! Obrigado pela preferência.";
     } 
 
