@@ -1,5 +1,4 @@
 let resposta = {};
-
 var update = {
     "cnpj" : "",
     "nome_comercial" : "",
@@ -10,7 +9,7 @@ var update = {
     "folha_salarial" : ""
 };
 
-var resposta_final = {
+let resposta_final = {
     "texto" : ""
 };
 
@@ -56,7 +55,10 @@ function getBotResponse(input, numPergunta) {
             body: JSON.stringify(update),
             };
 
-        fetch('http://localhost:8080/empresas/valida', options).then(resp => resp.text()).then(r => {return r;}).catch(e => {console.log(e);});
+        fetch('http://localhost:8080/empresas/valida', options).then(resp => resp.text()).then(r => {resposta_final["texto"] = r;
+                                                                                                        return r;
+                                                                                                    }).catch(e => {console.log(e);});
+        return resposta_final["texto"];
     } 
 
 }
