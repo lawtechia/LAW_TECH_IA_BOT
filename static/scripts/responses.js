@@ -43,10 +43,6 @@ function getBotResponse(input, numPergunta) {
     } else if (numPergunta == 7) {
         update["folha_salarial"] = input;
 
-        var valida = {
-            "cnpj": update["cnpj"]
-        }
-
         var options = {
             method: 'POST',
             headers: {
@@ -57,10 +53,23 @@ function getBotResponse(input, numPergunta) {
 
         fetch('http://localhost:8080/empresas/valida', options).then(resp => resp.text())
             .then(r => {
-                let botHtml = '<p class="botText"><span>' + r + '</span></p>';
-                $("#chatbox").append(botHtml);
-                document.getElementById("chat-bar-bottom").scrollIntoView(true);
-            }).catch(e => {console.log(e);});                                                                                                      
+                    let botHtml = '<p class="botText"><span>' + r + '</span></p>';
+                    $("#chatbox").append(botHtml);
+                    document.getElementById("chat-bar-bottom").scrollIntoView(true);
+                    
+                     var options = {
+                     method: 'POST',
+                     headers: {
+                     'Content-Type': 'application/json',
+                     },
+                     body: JSON.stringify(update),
+                     };
+                     
+                    fetch('http://localhost:8080/empresas', options).catch(e => {console.log(e);});
+                       
+            }).catch(e => {console.log(e);});
+        
+        
         return "terminou";                                                                                               
     } 
 
