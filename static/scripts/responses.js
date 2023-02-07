@@ -64,9 +64,9 @@ function getBotResponse(input, numPergunta) {
                      },
                      body: JSON.stringify(update),
                      };
-                     
-                    fetch('http://localhost:8080/empresas', options).catch(e => {console.log(e);});
-                       
+                    if (r == 'Obrigado pelas informações. A LMA AI irá analisar e retorna a você em 72h! Obrigado pela preferência.'){
+                        fetch('http://localhost:8080/empresas', options).catch(e => {console.log(e);});
+                    };
             }).catch(e => {console.log(e);});
         
         
