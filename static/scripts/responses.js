@@ -10,6 +10,10 @@ var update = {
     "folha_salarial" : ""
 };
 
+var resposta_final = {
+    "texto" : ""
+};
+
 function getBotResponse(input, numPergunta) {
     
     if (numPergunta == 0){
@@ -52,9 +56,13 @@ function getBotResponse(input, numPergunta) {
             body: JSON.stringify(update),
             };
 
-        fetch('http://localhost:8080/empresas/valida', options).then(resp => resp.text()).then(r => console.log(r)).catch(e => {console.log(e);});
-
-        return "Obrigado pelas informações. A LMA AI irá analisar e retorna a você em 72h! Obrigado pela preferência.";
+        fetch('http://localhost:8080/empresas/valida', options).then(resp => resp.text()).then(r => resposta_final["texto"] = r).catch(e => {console.log(e);});
+        
+        if (resposta_final["texto"] == 'CNPJ NOVO'){
+            return "Obrigado pelas informações. A LMA AI irá analisar e retorna a você em 72h! Obrigado pela preferência.";
+        } else {
+            return resposta_final["texto"];
+        }
     } 
 
 }
