@@ -93,7 +93,9 @@ function getHardResponse(userText) {
                 exibeChat('Para realizar uma análise mais detalhada, por favor nos informe alguns dados...')
                 exibeChat(botResponse);    
             } else {
-                exibeChat(botResponse);
+                if (botResponse != "terminou") {
+                    exibeChat(botResponse);
+                }
             }
         }
         
