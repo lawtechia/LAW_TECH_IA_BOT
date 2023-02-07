@@ -55,10 +55,13 @@ function getBotResponse(input, numPergunta) {
             body: JSON.stringify(update),
             };
 
-        fetch('http://localhost:8080/empresas/valida', options).then(resp => resp.text()).then(r => {resposta_final["texto"] = r;
-                                                                                                        return r;
-                                                                                                    }).catch(e => {console.log(e);});
-        return resposta_final["texto"];
+        fetch('http://localhost:8080/empresas/valida', options).then(resp => resp.text())
+            .then(r => {
+                let botHtml = '<p class="botText"><span>' + r + '</span></p>';
+                $("#chatbox").append(botHtml);
+                document.getElementById("chat-bar-bottom").scrollIntoView(true);
+            }).catch(e => {console.log(e);});                                                                                                      
+        return "terminou";                                                                                               
     } 
 
 }
