@@ -17,7 +17,7 @@ function getBotResponse(input, numPergunta) {
     
     if (numPergunta == 0){
         update["nome_comercial"] = input;
-        return "Qual o seu email?";
+        return "Digite seu email, por favor: ";
     } else if (numPergunta == 1) {
         update["email_comercial"] = input;
         return "Qual CNPJ deseja fazer a consulta? (DIGITE APENAS OS NUMEROS)";
@@ -36,10 +36,10 @@ function getBotResponse(input, numPergunta) {
         return "Qual o faturamento anual aproximado?";
     } else if (numPergunta == 5) {
         update["faturamento_anual"] = input;
-        return "Qual a quantidade de funcionários aproximada?";
+        return "Qual o faturamento anual aproximado? (R$ milhões)";
     } else if (numPergunta == 6) {
         update["qtd_funcionarios"] = input;
-        return "Qual o valor da folha de pagamento (R$ milhões) aproximada?";
+        return "Qual o valor da folha de pagamento aproximada? (R$ milhões)";
     } else if (numPergunta == 7) {
         update["folha_salarial"] = input;
 
@@ -64,7 +64,7 @@ function getBotResponse(input, numPergunta) {
                      },
                      body: JSON.stringify(update),
                      };
-                    if (r == 'Obrigado pelas informações. A LMA AI irá analisar e retorna a você em 72h! Obrigado pela preferência.'){
+                    if (r == 'Obrigado pelas informações. A LMA IA irá analisar e retorna a você assim que o processo terminar. Obrigado pela preferência.'){
                         fetch('https://restapilma-production.up.railway.app/empresas', options).catch(e => {console.log(e);});
                     };
             }).catch(e => {console.log(e);});
