@@ -33,10 +33,10 @@ function getBotResponse(input, numPergunta) {
         }
     } else if (numPergunta == 4) {
         update["regime_tributacao"] = input;
-        return "Qual o faturamento anual aproximado?";
+        return "Qual o faturamento anual aproximado? (R$ milhões)";
     } else if (numPergunta == 5) {
         update["faturamento_anual"] = input;
-        return "Qual o faturamento anual aproximado? (R$ milhões)";
+        return "Qual a quantidade de funcionários aproximadamente?";
     } else if (numPergunta == 6) {
         update["qtd_funcionarios"] = input;
         return "Qual o valor da folha de pagamento aproximada? (R$ milhões)";
