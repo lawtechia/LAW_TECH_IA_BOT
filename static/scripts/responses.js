@@ -64,7 +64,7 @@ function getBotResponse(input, numPergunta) {
                      },
                      body: JSON.stringify(update),
                      };
-                    if (r == 'Obrigado pelas informações. A LMA IA irá analisar e retorna a você assim que o processo terminar. Obrigado pela preferência.'){
+                    if (r == 'Obrigado pelas informações. A LMA AI irá analisar e retorna a você assim que o processo terminar. Obrigado pela preferência.'){
                         fetch('https://restapilma-production.up.railway.app/empresas', options).catch(e => {console.log(e);});
                     };
             }).catch(e => {console.log(e);});
