@@ -51,7 +51,7 @@ function getBotResponse(input, numPergunta) {
             body: JSON.stringify(update),
             };
 
-        fetch('https://restapilma-production.up.railway.app/empresas/valida', options).then(resp => resp.text())
+        fetch('http://3.239.169.123:8081/empresas/valida', options).then(resp => resp.text())
             .then(r => {
                     let botHtml = '<p class="botText"><span>' + r + '</span></p>';
                     $("#chatbox").append(botHtml);
@@ -65,7 +65,7 @@ function getBotResponse(input, numPergunta) {
                      body: JSON.stringify(update),
                      };
                     if (r == 'Obrigado pelas informações. A LMA AI irá analisar e retorna a você em 72h! Obrigado pela preferência.'){
-                        fetch('https://restapilma-production.up.railway.app/empresas', options).catch(e => {console.log(e);});
+                        fetch('http://3.239.169.123:8081/empresas', options).catch(e => {console.log(e);});
                     };
             }).catch(e => {console.log(e);});
         
