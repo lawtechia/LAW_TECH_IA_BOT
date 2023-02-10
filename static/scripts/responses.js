@@ -13,6 +13,8 @@ function getBotResponse(input, numPergunta) {
     
     if (numPergunta == 0){
         update["nome_comercial"] = input;
+        document.getElementById("textInput").type = "email";
+        document.getElementById("textInput").placeholder = "example@example.com";
         return "Digite seu email, por favor: ";
     } else if (numPergunta == 1) {
         update["email_comercial"] = input;
