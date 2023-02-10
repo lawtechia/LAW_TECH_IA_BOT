@@ -172,7 +172,8 @@ function getResponse(tipoEntrada) {
             setTimeout(() => {
                 getHardResponse(userText);
             }, 1000)
-        } else {
+        } 
+    } else {
         setTimeout(() => {
             getHardResponse(textoButton);
         }, 1000)
