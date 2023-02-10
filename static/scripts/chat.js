@@ -112,7 +112,7 @@ function getHardResponse(userText) {
                 }
             
             }).catch(
-                exibeChat("O servidor no momento está congestionado, por favor tente mais tarde.")
+                exibeChat("Aguardando servidor...")
             );
     } else {
         botResponse = getBotResponse(userText, cont);
