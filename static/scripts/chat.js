@@ -2,6 +2,18 @@
 var coll = document.getElementsByClassName("collapsible");
 var cont = 0;
 
+var textoButton = "";
+
+var listener_ok = function fn () {
+    textoButton = "sim";
+    getResponse("button");
+}
+
+var listener_cancel = function fn () {
+    textoButton = "nao";
+    getResponse("button");
+}
+
 for (let i = 0; i < coll.length; i++) {
     coll[i].addEventListener("click", function () {
         this.classList.toggle("active");
@@ -80,7 +92,27 @@ function getHardResponse(userText) {
                 exibeChat(botResponse);
                 botResponse = getBotResponse(userText, 2);
                 exibeChat(botResponse);
-            }).catch(console.log('Houve uma falha no servidor.'));
+            
+                let btnconfirma = '<input type="button" class="btnOpcoes ok" value="SIM">';
+                $("#chatbox").append(btnconfirma);
+                let btnCancela = '<input type="button" class="btnOpcoes cancel" value="NÃO">';
+                $("#chatbox").append(btnCancela);
+                document.getElementById("chat-bar-bottom").scrollIntoView(true);
+            
+                var buttons_ok = document.getElementsByClassName("btnOpcoes ok");
+                var buttons_cancel = document.getElementsByClassName("btnOpcoes cancel");
+
+                for (let i = 0; i < buttons_ok.length; i++) {
+                    buttons_ok[i].addEventListener("click", listener_ok);
+                }
+
+                for (let i = 0; i < buttons_cancel.length; i++) {
+                    buttons_cancel[i].addEventListener("click", listener_cancel);
+                }
+            
+            }).catch(
+                exibeChat("O servidor no momento está congestionado, por favor tente mais tarde.")
+            );
     } else {
         botResponse = getBotResponse(userText, cont);
        
@@ -112,22 +144,28 @@ function exibeChat(botResponse) {
 
 //Gets the text text from the input box and processes it
 function getResponse() {
-    let userText = $("#textInput").val();
+    
+    if (tipoEntrada == "chat") {
+        let userText = $("#textInput").val();
+        
+        // if (userText == "") {
+        //     userText = "I love Code Palace!";
+        // }
 
-    if (userText == "") {
-        userText = "I love Code Palace!";
+        let userHtml = '<p class="userText"><span>' + userText + '</span></p>';
+
+        $("#textInput").val("");
+        $("#chatbox").append(userHtml);
+        document.getElementById("chat-bar-bottom").scrollIntoView(true);
+        
+        setTimeout(() => {
+            getHardResponse(userText);
+        }, 1000)
+    } else {
+        setTimeout(() => {
+            getHardResponse(textoButton);
+        }, 1000)
     }
-
-    let userHtml = '<p class="userText"><span>' + userText + '</span></p>';
-
-    $("#textInput").val("");
-    $("#chatbox").append(userHtml);
-    document.getElementById("chat-bar-bottom").scrollIntoView(true);
-
-    setTimeout(() => {
-        getHardResponse(userText);
-    }, 1000)
-
 }
 
 // Handles sending text via button clicks
@@ -145,7 +183,7 @@ function buttonSendText(sampleText) {
 }
 
 function sendButton() {
-    getResponse();
+   getResponse("chat");
 }
 
 function heartButton() {
@@ -155,6 +193,6 @@ function heartButton() {
 // Press enter to send a message
 $("#textInput").keypress(function (e) {
     if (e.which == 13) {
-        getResponse();
+        getResponse("chat");
     }
 });
