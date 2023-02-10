@@ -12,15 +12,19 @@ var update = {
 function getBotResponse(input, numPergunta) {
     
     if (numPergunta == 0){
+        
         update["nome_comercial"] = input;
         document.getElementById("textInput").type = "email";
         document.getElementById("textInput").placeholder = "example@example.com";
-        return "Digite seu email, por favor: ";
+        
+        return "Digite seu email, por favor:";
     } else if (numPergunta == 1) {
+        
         update["email_comercial"] = input;
         document.getElementById("textInput").type = "text";
-       
+        
         formataCnpj(numPergunta);
+        
         return "Qual CNPJ deseja fazer a consulta? (DIGITE APENAS OS NUMEROS)";
     } else if (numPergunta == 2) {
         
@@ -28,9 +32,10 @@ function getBotResponse(input, numPergunta) {
         formataCnpj(numPergunta);
         document.getElementById("textInput").type = "button";
         
-        return "Confira se as informações do CNPJ informado estão corretas, digite SIM ou NAO: ";
+        return "Confira se as informações do CNPJ informado estão corretas e selecione uma opção abaixo:";
     } else if (numPergunta == 3) {
         document.getElementById("textInput").type = "text";
+        
         if (input.toLowerCase() == 'sim' || input.toLowerCase() == 's') {
             return "O CNPJ informado se encontra no regime de tributação LUCRO REAL, ou LUCRO PRESUMIDO?";
         } else {
@@ -41,7 +46,7 @@ function getBotResponse(input, numPergunta) {
         return "Qual o faturamento anual aproximado? (R$ milhões)";
     } else if (numPergunta == 5) {
         update["faturamento_anual"] = input;
-        return "Qual a quantidade de funcionários aproximadamente?";
+        return "Qual a quantidade de funcionários aproximada?";
     } else if (numPergunta == 6) {
         update["qtd_funcionarios"] = input;
         return "Qual o valor da folha de pagamento aproximada? (R$ milhões)";
@@ -56,7 +61,7 @@ function getBotResponse(input, numPergunta) {
             body: JSON.stringify(update),
             };
 
-        fetch('https://restapilma-production.up.railway.app/empresas/valida', options).then(resp => resp.text())
+            fetch('https://restapilma-production.up.railway.app/empresas/valida', options).then(resp => resp.text())
             .then(r => {
                     let botHtml = '<p class="botText"><span>' + r + '</span></p>';
                     $("#chatbox").append(botHtml);
@@ -73,16 +78,16 @@ function getBotResponse(input, numPergunta) {
                         fetch('https://restapilma-production.up.railway.app/empresas', options).catch(e => {console.log(e);});
                     };
             }).catch(e => {console.log(e);});
-        
-        
-        return "terminou";                                                                                               
-    }
-    
+
+        return "terminou";
+    } 
+}
+
 var listener = function fn (event){
     var x = event.target.value.replace(/\D/g, '').match(/(\d{0,2})(\d{0,3})(\d{0,3})(\d{0,4})(\d{0,2})/);
     event.target.value = !x[2] ? x[1] : x[1] + '.' + x[2] + '.' + x[3] + '/' + x[4] + (x[5] ? '-' + x[5] : '');
-}    
-   
+}
+
 function formataCnpj(numPergunta) {
 
     if (numPergunta == 1){
@@ -90,7 +95,4 @@ function formataCnpj(numPergunta) {
     } else {
         document.getElementById('textInput').removeEventListener('input', listener);
     }
-}
-  
-
 }
