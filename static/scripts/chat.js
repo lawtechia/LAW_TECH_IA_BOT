@@ -72,6 +72,7 @@ function getHardResponse(userText) {
             }
         };
         
+        userText = userText.replace("/","").replace(".","").replace("-","");
         fetch('https://consulta-cnpj-gratis.p.rapidapi.com/office/' + userText + '?simples=false', options)
             .then((response) => response.json())
             .then((response) => {
