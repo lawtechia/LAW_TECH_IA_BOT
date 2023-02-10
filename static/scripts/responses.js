@@ -19,29 +19,38 @@ function getBotResponse(input, numPergunta) {
         
         return "Digite seu email, por favor:";
     } else if (numPergunta == 1) {
-        
-        update["email_comercial"] = input;
-        document.getElementById("textInput").type = "text";
-        
-        formataCnpj(numPergunta);
-        
+       resposta = validacaoEmail(input);
+        if (resposta != 'Email inválido') {
+            update["email_comercial"] = input;
+            document.getElementById("textInput").type = "text";
+            formataCnpj(numPergunta);
+            document.getElementById("textInput").placeholder = "XX.XXX.XXX/XXXX-XX";
+            return "Qual CNPJ deseja fazer a consulta? (DIGITE APENAS OS NUMEROS)";
+        } else {
+            return "Email inválido, digite um email válido por favor. Ex: email@example.com";
+        }
         return "Qual CNPJ deseja fazer a consulta? (DIGITE APENAS OS NUMEROS)";
     } else if (numPergunta == 2) {
         
-        update["cnpj"] = input.replace("/","").replace(".","").replace("-","");
-        formataCnpj(numPergunta);
-        document.getElementById("textInput").type = "button";
-        
-        return "Confira se as informações do CNPJ informado estão corretas e selecione uma opção abaixo:";
-    } else if (numPergunta == 3) {
-        document.getElementById("textInput").type = "text";
-        
-        if (input.toLowerCase() == 'sim' || input.toLowerCase() == 's') {
-            return "O CNPJ informado se encontra no regime de tributação LUCRO REAL, ou LUCRO PRESUMIDO?";
+       if (validaCNPJ(input)) {
+            update["cnpj"] = input.replace("/","").replace(".","").replace("-","");
+            formataCnpj(numPergunta);
+            document.getElementById("textInput").type = "button";
+            return "Confira se as informações do CNPJ informado estão corretas e selecione uma opção abaixo:";
         } else {
-            return 'Verifique se o CNPJ está correto, e o digite novamente. (DIGITE APENAS OS NÚMEROS)';
+            return "CNPJ inválido";
         }
+    } else if (numPergunta == 3) {
+       document.getElementById("textInput").type = "text";
+       document.getElementById("textInput").placeholder = "";
+        
+       if (input.toLowerCase() == 'sim' || input.toLowerCase() == 's') {
+            return "O CNPJ informado se encontra no regime de tributação LUCRO REAL, ou LUCRO PRESUMIDO?";
+       } else {
+            return 'Verifique se o CNPJ está correto, e o digite novamente. (DIGITE APENAS OS NÚMEROS)';
+       }
     } else if (numPergunta == 4) {
+        document.getElementById("textInput").addEventListener("keypress", onlynumber);
         update["regime_tributacao"] = input;
         return "Qual o faturamento anual aproximado? (R$ milhões)";
     } else if (numPergunta == 5) {
@@ -96,3 +105,49 @@ function formataCnpj(numPergunta) {
         document.getElementById('textInput').removeEventListener('input', listener);
     }
 }
+
+// HABILITA SOMENTE NUMEROS NO INPUT
+
+function onlynumber(evt) {
+    var theEvent = evt || window.event;
+    var key = theEvent.keyCode || theEvent.which;
+    key = String.fromCharCode( key );
+    //var regex = /^[0-9.,]+$/;
+    var regex = /^[0-9.]+$/;
+    if( !regex.test(key) ) {
+       theEvent.returnValue = false;
+       if(theEvent.preventDefault) theEvent.preventDefault();
+    }
+ }
+
+function validacaoEmail(email) {
+
+    var re = /\S+@\S+\.\S+/;
+    if (re.test(email)) {
+        return "Email válido";
+    } else {
+        return "Email inválido";
+    }
+}
+
+function validaCNPJ (cnpj) {
+    var b = [ 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 ]
+    var c = String(cnpj).replace(/[^\d]/g, '')
+    
+    if(c.length !== 14)
+        return false
+
+    if(/0{14}/.test(c))
+        return false
+
+    for (var i = 0, n = 0; i < 12; n += c[i] * b[++i]);
+    if(c[12] != (((n %= 11) < 2) ? 0 : 11 - n))
+        return false
+
+    for (var i = 0, n = 0; i <= 12; n += c[i] * b[i++]);
+    if(c[13] != (((n %= 11) < 2) ? 0 : 11 - n))
+        return false
+
+    return true
+}
+
