@@ -72,61 +72,72 @@ function getHardResponse(userText) {
             }
         };
         
-        userText = userText.replace("/","").replace(".","").replace("-","");
-        fetch('https://consulta-cnpj-gratis.p.rapidapi.com/office/' + userText + '?simples=false', options)
-            .then((response) => response.json())
-            .then((response) => {
-                
-                
-                botResponse = 'CNPJ: ' + response['taxId'].replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5");
-                exibeChat(botResponse);
+        botResponse = getBotResponse(userText, 2);
+        if (botResponse != 'CNPJ inválido') {
+            userText = userText.replace("/","").replace(".","").replace("-","");
+            fetch('https://consulta-cnpj-gratis.p.rapidapi.com/office/' + userText + '?simples=false', options)
+                .then((response) => response.json())
+                .then((response) => {
+                    
+                    botResponse = 'CNPJ: ' + response['taxId'].replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5");
+                    exibeChat(botResponse);
+                    
+                    if (response['alias'] != null){
+                        botResponse = 'NOME: ' + response['alias'];
+                    } else {
+                        botResponse = 'NOME: ' + response['company']['name'];
+                    }
+                    exibeChat(botResponse);
+                    
+                    botResponse = 'SITUAÇÃO CADASTRAL: ' + response['status']['text'];
+                    exibeChat(botResponse);
+                    
+                    botResponse = 'CNAE: ' + response['mainActivity']['id'] + ' - ' + response['mainActivity']['text'];
+                    exibeChat(botResponse);
+                    
+                    botResponse = getBotResponse(userText, 2);
+                    exibeChat(botResponse);
 
-                if (response['alias'] != null){
-                    botResponse = 'NOME: ' + response['alias'];
-                } else {
-                    botResponse = 'NOME: ' + response['company']['name'];
-                }
-                exibeChat(botResponse);
-                botResponse = 'SITUAÇÃO CADASTRAL: ' + response['status']['text'];
-                exibeChat(botResponse);
-                botResponse = 'CNAE: ' + response['mainActivity']['id'] + ' - ' + response['mainActivity']['text'];
-                exibeChat(botResponse);
-                botResponse = getBotResponse(userText, 2);
-                exibeChat(botResponse);
-            
-                let btnconfirma = '<input type="button" class="btnOpcoes ok" value="SIM">';
-                $("#chatbox").append(btnconfirma);
-                let btnCancela = '<input type="button" class="btnOpcoes cancel" value="NÃO">';
-                $("#chatbox").append(btnCancela);
-                document.getElementById("chat-bar-bottom").scrollIntoView(true);
-            
-                var buttons_ok = document.getElementsByClassName("btnOpcoes ok");
-                var buttons_cancel = document.getElementsByClassName("btnOpcoes cancel");
+                    let btnconfirma = '<input type="button" class="btnOpcoes ok" value="SIM">';
+                    $("#chatbox").append(btnconfirma);
+                    let btnCancela = '<input type="button" class="btnOpcoes cancel" value="NÃO">';
+                    $("#chatbox").append(btnCancela);
+                    document.getElementById("chat-bar-bottom").scrollIntoView(true);
 
-                for (let i = 0; i < buttons_ok.length; i++) {
-                    buttons_ok[i].addEventListener("click", listener_ok);
-                }
+                    var buttons_ok = document.getElementsByClassName("btnOpcoes ok");
+                    var buttons_cancel = document.getElementsByClassName("btnOpcoes cancel");
 
-                for (let i = 0; i < buttons_cancel.length; i++) {
-                    buttons_cancel[i].addEventListener("click", listener_cancel);
-                }
-            
+                    for (let i = 0; i < buttons_ok.length; i++) {
+                        buttons_ok[i].addEventListener("click", listener_ok);
+                    }
+
+                    for (let i = 0; i < buttons_cancel.length; i++) {
+                        buttons_cancel[i].addEventListener("click", listener_cancel);
+                    }
+        
             }).catch(
                 exibeChat("Aguardando servidor...")
             );
+        } else {
+            exibeChat("Por favor, nos informe um CNPJ válido");
+            cont -= 1; 
+        }
     } else {
         botResponse = getBotResponse(userText, cont);
-       
+
+        if (botResponse == 'Email inválido, digite um email válido por favor. Ex: email@example.com') {
+            cont = 0;
+        }
+        
         if ( botResponse == 'Verifique se o CNPJ está correto, e o digite novamente. (DIGITE APENAS OS NÚMEROS)'){
             cont = 1;
             exibeChat(botResponse);
         } else {
-
             if (cont == 3){
                 exibeChat('Para realizar uma análise mais detalhada, por favor nos informe alguns dados...')
                 exibeChat(botResponse);    
             } else {
-                if (botResponse != "terminou") {
+                if (botResponse != "terminou"){
                     exibeChat(botResponse);
                 }
             }
@@ -149,20 +160,19 @@ function getResponse(tipoEntrada) {
     if (tipoEntrada == "chat") {
         let userText = $("#textInput").val();
         
-        // if (userText == "") {
-        //     userText = "I love Code Palace!";
-        // }
+         if (userText == "") {
+             exibeChat("Por favor, o campo não pode ser vazio!!!");
+        } else {
+            let userHtml = '<p class="userText"><span>' + userText + '</span></p>';
 
-        let userHtml = '<p class="userText"><span>' + userText + '</span></p>';
-
-        $("#textInput").val("");
-        $("#chatbox").append(userHtml);
-        document.getElementById("chat-bar-bottom").scrollIntoView(true);
+            $("#textInput").val("");
+            $("#chatbox").append(userHtml);
+            document.getElementById("chat-bar-bottom").scrollIntoView(true);
         
-        setTimeout(() => {
-            getHardResponse(userText);
-        }, 1000)
-    } else {
+            setTimeout(() => {
+                getHardResponse(userText);
+            }, 1000)
+        } else {
         setTimeout(() => {
             getHardResponse(textoButton);
         }, 1000)
@@ -187,8 +197,8 @@ function sendButton() {
    getResponse("chat");
 }
 
-function heartButton() {
-    buttonSendText("Heart clicked!")
+function refresh() {
+    document.location.reload(true);
 }
 
 // Press enter to send a message
