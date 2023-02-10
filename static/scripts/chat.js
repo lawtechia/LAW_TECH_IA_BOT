@@ -143,7 +143,7 @@ function exibeChat(botResponse) {
 }
 
 //Gets the text text from the input box and processes it
-function getResponse() {
+function getResponse(tipoEntrada) {
     
     if (tipoEntrada == "chat") {
         let userText = $("#textInput").val();
