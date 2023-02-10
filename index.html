@@ -11,8 +11,6 @@
     <link rel="stylesheet" href="static/css/home.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"/>
-    
 </head>
 
 <body>
@@ -36,16 +34,17 @@
                         <!-- User input box -->
                         <div class="chat-bar-input-block">
                             <div id="userInput">
-                                <input id="textInput" class="input-box" type="tel" name="msg"
-                                    placeholder="Tap 'Enter' to send a message">
+                                <input id="textInput" class="input-box" type="text" name="msg" placeholder="Tap 'Enter' to send a message">
                                 <p></p>
                             </div>
 
                             <div class="chat-bar-icons">
-                                <i id="chat-icon" style="color: crimson;" class="fa fa-fw fa-heart"
+                                <i id="chat-icon-heart" style="color: crimson;" class="fa fa-fw fa-heart"
                                     onclick="heartButton()"></i>
-                                <i id="chat-icon" style="color: #333;" class="fa fa-fw fa-send"
+                                    <i id="chat-icon-send" style="color: #333;" class="fa fa-fw fa-send"
                                     onclick="sendButton()"></i>
+                                <!-- <i id="chat-icon" style="color: #333;" class="fa fa-fw fa-send"
+                                    onclick="sendButton()"></i> -->
                             </div>
                         </div>
 
