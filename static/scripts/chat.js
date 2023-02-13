@@ -1,3 +1,4 @@
+
 // Collapsible
 var coll = document.getElementsByClassName("collapsible");
 var cont = 0;
@@ -58,6 +59,10 @@ function firstBotMessage() {
 }
 
 firstBotMessage();
+
+setTimeout(() => {
+    document.getElementById("chat-button").click();
+}, 500);
 // 60765823000130
 // Retrieves the response
 function getHardResponse(userText) {
@@ -78,8 +83,9 @@ function getHardResponse(userText) {
             fetch('https://consulta-cnpj-gratis.p.rapidapi.com/office/' + userText + '?simples=false', options)
                 .then((response) => response.json())
                 .then((response) => {
-                    
+
                     botResponse = 'CNPJ: ' + response['taxId'].replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5");
+
                     exibeChat(botResponse);
                     
                     if (response['alias'] != null){

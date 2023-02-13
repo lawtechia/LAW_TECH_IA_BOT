@@ -163,6 +163,7 @@
     font-weight: normal;
     font-size: 16px;
     text-align: left;
+    transition-delay: 4s;
 }
 
 .botText span {
@@ -174,7 +175,19 @@
     border-bottom-left-radius: 2px;
     max-width: 80%;
     margin-left: 10px;
-    animation: floatup .5s forwards
+    animation: floatup 2s forwards
+}
+
+.img--logo {
+    text-align: center;
+    height: 300px;
+}
+
+.container--img {
+    background-color: #fff;
+    width: 100%;
+    height: 300px;
+    text-align: center;
 }
 
 @keyframes floatup {

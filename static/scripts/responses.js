@@ -19,7 +19,7 @@ function getBotResponse(input, numPergunta) {
         
         return "Digite seu email, por favor:";
     } else if (numPergunta == 1) {
-       resposta = validacaoEmail(input);
+        resposta = validacaoEmail(input);
         if (resposta != 'Email inválido') {
             update["email_comercial"] = input;
             document.getElementById("textInput").type = "text";
@@ -29,10 +29,10 @@ function getBotResponse(input, numPergunta) {
         } else {
             return "Email inválido, digite um email válido por favor. Ex: email@example.com";
         }
-        return "Qual CNPJ deseja fazer a consulta? (DIGITE APENAS OS NUMEROS)";
-    } else if (numPergunta == 2) {
         
-       if (validaCNPJ(input)) {
+    } else if (numPergunta == 2) {
+
+        if (validaCNPJ(input)) {
             update["cnpj"] = input.replace("/","").replace(".","").replace("-","");
             formataCnpj(numPergunta);
             document.getElementById("textInput").type = "button";
@@ -40,25 +40,26 @@ function getBotResponse(input, numPergunta) {
         } else {
             return "CNPJ inválido";
         }
+
     } else if (numPergunta == 3) {
-       document.getElementById("textInput").type = "text";
-       document.getElementById("textInput").placeholder = "";
+        document.getElementById("textInput").type = "text";
+        document.getElementById("textInput").placeholder = "";
         
-       if (input.toLowerCase() == 'sim' || input.toLowerCase() == 's') {
-            return "O CNPJ informado se encontra no regime de tributação LUCRO REAL, ou LUCRO PRESUMIDO?";
-       } else {
+        if (input.toLowerCase() == 'sim' || input.toLowerCase() == 's') {
+            return "O CNPJ informado se encontra no regime de tributação LUCRO REAL, ou LUCRO PRESUMIDO? Caso não souber, basta digitar 0.";
+        } else {
             return 'Verifique se o CNPJ está correto, e o digite novamente. (DIGITE APENAS OS NÚMEROS)';
-       }
+        }
     } else if (numPergunta == 4) {
         document.getElementById("textInput").addEventListener("keypress", onlynumber);
         update["regime_tributacao"] = input;
-        return "Qual o faturamento anual aproximado? (R$ milhões)";
+        return "Qual o faturamento anual aproximado? (R$ milhões) Caso não souber, basta digitar 0.";
     } else if (numPergunta == 5) {
         update["faturamento_anual"] = input;
-        return "Qual a quantidade de funcionários aproximada?";
+        return "Qual a quantidade de funcionários aproximada? Caso não souber, basta digitar 0.";
     } else if (numPergunta == 6) {
         update["qtd_funcionarios"] = input;
-        return "Qual o valor da folha de pagamento aproximada? (R$ milhões)";
+        return "Qual o valor da folha de pagamento aproximada? (R$ milhões) Caso não souber, basta digitar 0.";
     } else if (numPergunta == 7) {
         update["folha_salarial"] = input;
 
@@ -94,17 +95,9 @@ function getBotResponse(input, numPergunta) {
 
 var listener = function fn (event){
     var x = event.target.value.replace(/\D/g, '').match(/(\d{0,2})(\d{0,3})(\d{0,3})(\d{0,4})(\d{0,2})/);
-    event.target.value = !x[2] ? x[1] : x[1] + '.' + x[2] + '.' + x[3] + '/' + x[4] + (x[5] ? '-' + x[5] : '');
+    event.target.value = !x[2] ? x[1] : x[1] + '.' + x[2] + '.' + x[3] + '/' + x[4] + (x[5] ? '-' + x[5] : '');    
 }
 
-function formataCnpj(numPergunta) {
-
-    if (numPergunta == 1){
-        document.getElementById('textInput').addEventListener('input', listener);
-    } else {
-        document.getElementById('textInput').removeEventListener('input', listener);
-    }
-}
 
 // HABILITA SOMENTE NUMEROS NO INPUT
 
@@ -119,6 +112,17 @@ function onlynumber(evt) {
        if(theEvent.preventDefault) theEvent.preventDefault();
     }
  }
+
+
+ // ABILITA E DESABILITA MASCARA CNPJ
+function formataCnpj(numPergunta) {
+
+    if (numPergunta == 1){
+        document.getElementById('textInput').addEventListener('input', listener);
+    } else {
+        document.getElementById('textInput').removeEventListener('input', listener);
+    }
+}
 
 function validacaoEmail(email) {
 
@@ -150,4 +154,3 @@ function validaCNPJ (cnpj) {
 
     return true
 }
-
