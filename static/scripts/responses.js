@@ -71,7 +71,7 @@ function getBotResponse(input, numPergunta) {
             body: JSON.stringify(update),
             };
 
-            fetch('https://restapilma-production.up.railway.app/empresas/valida', options).then(resp => resp.text())
+            fetch('https://lma-ia.lmarestapi.click/empresas/valida', options).then(resp => resp.text())
             .then(r => {
                     let botHtml = '<p class="botText"><span>' + r + '</span></p>';
                     $("#chatbox").append(botHtml);
@@ -85,7 +85,7 @@ function getBotResponse(input, numPergunta) {
                      body: JSON.stringify(update),
                      };
                     if (r == 'Obrigado pelas informações. A LMA IA irá analisar e assim que o processo terminar vamos retorna a você. Obrigado pela preferência.'){
-                        fetch('https://restapilma-production.up.railway.app/empresas', options).catch(e => {console.log(e);});
+                        fetch('https://lma-ia.lmarestapi.click/empresas', options).catch(e => {console.log(e);});
                     };
             }).catch(e => {console.log(e);});
 
