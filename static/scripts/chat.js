@@ -8,11 +8,30 @@ var textoButton = "";
 var listener_ok = function fn () {
     textoButton = "sim";
     getResponse("button");
+    
 }
 
 var listener_cancel = function fn () {
     textoButton = "nao";
     getResponse("button");
+}
+
+var listener_real = function fn () {
+    textoButton = "LUCRO REAL";
+    getResponse("button");
+    document.getElementById("btnReal").removeEventListener("click", listener_real);
+}
+
+var listener_presumido = function fn () {
+    textoButton = "LUCRO PRESUMIDO";
+    getResponse("button");
+    document.getElementById("btnPresumido").removeEventListener("click", listener_presumido);
+}
+
+var listener_naoSabe = function fn () {
+    textoButton = "NÃO SEI";
+    getResponse("button");
+    document.getElementById("btnNaoSabe").removeEventListener("click", listener_naoSabe);
 }
 
 for (let i = 0; i < coll.length; i++) {
@@ -141,7 +160,17 @@ function getHardResponse(userText) {
         } else {
             if (cont == 3){
                 exibeChat('Para realizar uma análise mais detalhada, por favor nos informe alguns dados...')
-                exibeChat(botResponse);    
+                exibeChat(botResponse);
+                let btnReal = '<input id="btnReal" type="button" class="btnTributacao" value="LUCRO REAL">';
+                $("#chatbox").append(btnReal);
+                let btnPresumido = '<input id="btnPresumido" type="button" class="btnTributacao" value="LUCRO PRESUMIDO">';
+                $("#chatbox").append(btnPresumido);
+                let btnNaoSabe = '<input id="btnNaoSabe" type="button" class="btnTributacao" value="NÃO SEI">';
+                $("#chatbox").append(btnNaoSabe);
+                document.getElementById("chat-bar-bottom").scrollIntoView(true);
+                document.getElementById("btnReal").addEventListener("click", listener_real);
+                document.getElementById("btnPresumido").addEventListener("click", listener_presumido);
+                document.getElementById("btnNaoSabe").addEventListener("click", listener_naoSabe);
             } else {
                 if (botResponse != "terminou"){
                     exibeChat(botResponse);

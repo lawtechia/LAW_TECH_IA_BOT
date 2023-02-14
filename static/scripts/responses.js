@@ -25,7 +25,7 @@ function getBotResponse(input, numPergunta) {
             document.getElementById("textInput").type = "text";
             formataCnpj(numPergunta);
             document.getElementById("textInput").placeholder = "XX.XXX.XXX/XXXX-XX";
-            return "Qual CNPJ deseja fazer a consulta? (DIGITE APENAS OS NUMEROS)";
+            return "Qual CNPJ deseja fazer a consulta?";
         } else {
             return "Email inválido, digite um email válido por favor. Ex: email@example.com";
         }
@@ -42,24 +42,29 @@ function getBotResponse(input, numPergunta) {
         }
 
     } else if (numPergunta == 3) {
-        document.getElementById("textInput").type = "text";
         document.getElementById("textInput").placeholder = "";
         
         if (input.toLowerCase() == 'sim' || input.toLowerCase() == 's') {
-            return "O CNPJ informado se encontra no regime de tributação LUCRO REAL, ou LUCRO PRESUMIDO? Caso não souber, basta digitar 0.";
+            return "O CNPJ informado se encontra em qual regime de tributação LUCRO REAL, ou LUCRO PRESUMIDO?";
         } else {
-            return 'Verifique se o CNPJ está correto, e o digite novamente. (DIGITE APENAS OS NÚMEROS)';
+            return 'Verifique se o CNPJ está correto, e o digite novamente.';
         }
     } else if (numPergunta == 4) {
         document.getElementById("textInput").addEventListener("keypress", onlynumber);
         update["regime_tributacao"] = input;
-        return "Qual o faturamento anual aproximado? (R$ milhões) Caso não souber, basta digitar 0.";
+        document.getElementById("textInput").type = "text";
+
+        document.getElementById("textInput").addEventListener('input', moeda);
+        
+        return "Qual o faturamento anual aproximado? Caso não souber, basta digitar 0.";
     } else if (numPergunta == 5) {
         update["faturamento_anual"] = input;
+        document.getElementById("textInput").removeEventListener('input', moeda);
         return "Qual a quantidade de funcionários aproximada? Caso não souber, basta digitar 0.";
     } else if (numPergunta == 6) {
         update["qtd_funcionarios"] = input;
-        return "Qual o valor da folha de pagamento aproximada? (R$ milhões) Caso não souber, basta digitar 0.";
+        document.getElementById("textInput").addEventListener('input', moeda);
+        return "Qual o valor da folha de pagamento aproximada? Caso não souber, basta digitar 0.";
     } else if (numPergunta == 7) {
         update["folha_salarial"] = input;
 
@@ -154,3 +159,27 @@ function validaCNPJ (cnpj) {
 
     return true
 }
+
+
+String.prototype.reverse = function(){
+    return this.split('').reverse().join(''); 
+  };
+  
+var moeda =  function mascaraMoeda(evento){
+    campo = document.getElementById('textInput');
+    var tecla = (!evento) ? window.event.keyCode : evento.which;
+    var valor  =  campo.value.replace(/[^\d]+/gi,'').reverse();
+    var resultado  = "";
+    var mascara = "###.###.###.###,##".reverse();
+    for (var x=0, y=0; x<mascara.length && y<valor.length;) {
+      if (mascara.charAt(x) != '#') {
+        resultado += mascara.charAt(x);
+        x++;
+      } else {
+        resultado += valor.charAt(y);
+        y++;
+        x++;
+      }
+    }
+    campo.value = resultado.reverse();
+  }

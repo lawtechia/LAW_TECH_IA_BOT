@@ -94,9 +94,9 @@
 }
 
 .btnOpcoes:hover {
-    background-color: rgba(112, 144, 217, 0.8);
+    background-color: #875936;
     color: #ffffff;
-    border-color: rgba(112, 144, 217, 0.8);
+    border-color: #875936;
 }
 
 .ok{
@@ -111,6 +111,23 @@
     font-weight: 800;
     color: rgba(210, 0, 0, 0.82);
     border-color: rgba(210, 0, 0, 0.82);
+}
+
+.btnTributacao {
+    margin: -4px 6px 6px 2px;
+    padding: 5px;
+    width: 50%;
+    border-radius: 5px;
+    background-color: #875936;
+    color: #ffffff;
+    border-color: #875936;
+}
+
+.btnTributacao:hover {
+    background-color: rgba(0, 156, 0, 0.31);
+    font-weight: 800;
+    color: rgba(0, 111, 0, 1);
+    border-color: rgba(0, 111, 0, 1);
 }
 
 /* Chat bubbles */
