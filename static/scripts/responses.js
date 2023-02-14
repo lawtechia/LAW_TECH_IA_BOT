@@ -22,7 +22,7 @@ function getBotResponse(input, numPergunta) {
         resposta = validacaoEmail(input);
         if (resposta != 'Email inválido') {
             update["email_comercial"] = input;
-            document.getElementById("textInput").type = "text";
+            document.getElementById("textInput").type = "tel";
             formataCnpj(numPergunta);
             document.getElementById("textInput").placeholder = "XX.XXX.XXX/XXXX-XX";
             return "Qual CNPJ deseja fazer a consulta?";
