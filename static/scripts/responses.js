@@ -56,7 +56,7 @@ function getBotResponse(input, numPergunta) {
 
         document.getElementById("textInput").addEventListener('input', moeda);
         
-        return "Qual o faturamento anual aproximado? Caso não souber, basta digitar 0.";
+        return "Qual o faturamento anual aproximado? (R$ MILHÕES) Caso não souber, basta digitar 0.";
     } else if (numPergunta == 5) {
         update["faturamento_anual"] = input;
         document.getElementById("textInput").removeEventListener('input', moeda);
@@ -64,7 +64,7 @@ function getBotResponse(input, numPergunta) {
     } else if (numPergunta == 6) {
         update["qtd_funcionarios"] = input;
         document.getElementById("textInput").addEventListener('input', moeda);
-        return "Qual o valor da folha de pagamento aproximada? Caso não souber, basta digitar 0.";
+        return "Qual o valor da folha de pagamento aproximada? (R$ MILHÕES) Caso não souber, basta digitar 0.";
     } else if (numPergunta == 7) {
         update["folha_salarial"] = input;
 
