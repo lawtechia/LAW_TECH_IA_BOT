@@ -90,7 +90,11 @@ function getBotResponse(input, numPergunta) {
                      body: JSON.stringify(update),
                      };
                     if (r == 'Obrigado pelas informações. A LMA IA irá analisar e assim que o processo terminar vamos retorna a você. Obrigado pela preferência.'){
-                        fetch('https://lma-ia.lmarestapi.click/empresas', options).catch(e => {console.log(e);});
+                        fetch('https://lma-ia.lmarestapi.click/empresas', options).catch(e => {setTimeout(() => {
+                    let botHtml = '<p class="botText"><span>' + 'Servidor congestionado...Tente mais tarde.' + '</span></p>';
+                    $("#chatbox").append(botHtml);
+                    document.getElementById("chat-bar-bottom").scrollIntoView(true);
+            }, 10000)});
                     };
             }).catch(e => {console.log(e);});
 
