@@ -220,7 +220,7 @@
     }
 }
 
-@media screen and (max-width:600px) {
+@media screen and (max-width:800px) {
     .full-chat-block {
         width: 100%;
         border-radius: 0px;
@@ -236,5 +236,11 @@
         border: 0px;
         border-top: 3px solid white;
         border-radius: 0px;
+    }
+
+    .img--logo {
+        text-align: center;
+        height: 200px;
+        width: 100%;
     }
 }
