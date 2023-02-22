@@ -1,4 +1,3 @@
-
 // Collapsible
 var coll = document.getElementsByClassName("collapsible");
 var cont = 0;
@@ -68,7 +67,7 @@ function getTime() {
 
 // Gets the first message
 function firstBotMessage() {
-    let firstMessage = "Bem vindo a LMA IA. Por favor, nos informe seu nome completo para melhor atende-lo!"
+    let firstMessage = "Bem vindo a LAWTECH IA. Por favor, nos informe seu nome completo para melhor atende-lo!"
     document.getElementById("botStarterMessage").innerHTML = '<p class="botText"><span>' + firstMessage + '</span></p>';
 
     let time = getTime();

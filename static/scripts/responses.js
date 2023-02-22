@@ -22,7 +22,7 @@ function getBotResponse(input, numPergunta) {
         resposta = validacaoEmail(input);
         if (resposta != 'Email inválido') {
             update["email_comercial"] = input;
-            document.getElementById("textInput").type = "tel";
+            document.getElementById("textInput").type = "text";
             formataCnpj(numPergunta);
             document.getElementById("textInput").placeholder = "XX.XXX.XXX/XXXX-XX";
             return "Qual CNPJ deseja fazer a consulta?";
@@ -56,7 +56,7 @@ function getBotResponse(input, numPergunta) {
 
         document.getElementById("textInput").addEventListener('input', moeda);
         
-        return "Qual o faturamento anual aproximado? (R$ MILHÕES) Caso não souber, basta digitar 0.";
+        return "Qual o faturamento anual aproximado? Caso não souber, basta digitar 0.";
     } else if (numPergunta == 5) {
         update["faturamento_anual"] = input;
         document.getElementById("textInput").removeEventListener('input', moeda);
@@ -64,7 +64,7 @@ function getBotResponse(input, numPergunta) {
     } else if (numPergunta == 6) {
         update["qtd_funcionarios"] = input;
         document.getElementById("textInput").addEventListener('input', moeda);
-        return "Qual o valor da folha de pagamento aproximada? (R$ MILHÕES) Caso não souber, basta digitar 0.";
+        return "Qual o valor da folha de pagamento aproximada? Caso não souber, basta digitar 0.";
     } else if (numPergunta == 7) {
         update["folha_salarial"] = input;
 
@@ -89,12 +89,8 @@ function getBotResponse(input, numPergunta) {
                      },
                      body: JSON.stringify(update),
                      };
-                    if (r == 'Obrigado pelas informações. A LMA IA irá analisar e assim que o processo terminar vamos retorna a você. Obrigado pela preferência.'){
-                        fetch('https://lma-ia.lmarestapi.click/empresas', options).catch(e => {setTimeout(() => {
-                    let botHtml = '<p class="botText"><span>' + 'Servidor congestionado...Tente mais tarde.' + '</span></p>';
-                    $("#chatbox").append(botHtml);
-                    document.getElementById("chat-bar-bottom").scrollIntoView(true);
-            }, 10000)});
+                    if (r == 'Obrigado pelas informações. A LAWTECH IA irá analisar e assim que o processo terminar vamos retorna a você. Obrigado pela preferência.'){
+                        fetch('https://lma-ia.lmarestapi.click/empresas', options).catch(e => {console.log(e);});
                     };
             }).catch(e => {console.log(e);});
 

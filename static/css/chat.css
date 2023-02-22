@@ -6,8 +6,10 @@
 }
 
 .collapsible {
-    background-color: #875936;
+    background-color: #00003b;
     color: white;
+    font-family: 'Share Tech Mono', monospace;
+    font-weight: 400;
     cursor: pointer;
     padding: 18px;
     width: 350px;
@@ -24,7 +26,7 @@
     overflow: hidden;
     transition: max-height 0.2s ease-out;
     /* background-color: #f1f1f1; */
-    background-color: #875936;
+    background-color: #00003b;
 }
 
 .full-chat-block {
@@ -94,9 +96,9 @@
 }
 
 .btnOpcoes:hover {
-    background-color: #875936;
+    background-color: #00003b;
     color: #ffffff;
-    border-color: #875936;
+    border-color: #00003b;
 }
 
 .ok{
@@ -118,9 +120,9 @@
     padding: 5px;
     width: 50%;
     border-radius: 5px;
-    background-color: #875936;
+    background-color: #00003b;
     color: #ffffff;
-    border-color: #875936;
+    border-color: #00003b;
 }
 
 .btnTributacao:hover {
@@ -155,9 +157,9 @@
 
 .userText {
     color: white;
-    font-family: Helvetica;
+    font-family: 'Share Tech Mono', monospace;
     font-size: 16px;
-    font-weight: normal;
+    font-weight: 400;
     text-align: right;
     clear: both;
 }
@@ -165,7 +167,7 @@
 .userText span {
     line-height: 1.5em;
     display: inline-block;
-    background: #875936;
+    background: #00003b;
     padding: 10px;
     border-radius: 8px;
     border-bottom-right-radius: 2px;
@@ -176,8 +178,8 @@
 
 .botText {
     color: white;
-    font-family: Helvetica;
-    font-weight: normal;
+    font-family: 'Share Tech Mono', monospace;
+    font-weight: 400;
     font-size: 16px;
     text-align: left;
     transition-delay: 4s;
@@ -186,7 +188,7 @@
 .botText span {
     line-height: 1.5em;
     display: inline-block;
-    background: #875936;
+    background: #00003b;
     padding: 10px;
     border-radius: 8px;
     border-bottom-left-radius: 2px;
