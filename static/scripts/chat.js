@@ -1,8 +1,23 @@
 // Collapsible
 var coll = document.getElementsByClassName("collapsible");
 var cont = 0;
-
+var flag_atualizacao = "nao";
 var textoButton = "";
+
+var atualizar_financeiro = function fin (event){
+    cont = 3;
+    textoButton = "sim";
+    getResponse("button");
+    flag_atualizacao = "sim";
+    document.getElementById('btAtualizar').removeEventListener('click', atualizar_financeiro);
+}
+
+var finalizar_app = function fin (event){
+    let botHtml = '<p class="botText"><span>' + 'Aguarde a análise do CNPJ informado ficar pronta, ou atualize a página e tente cadastrar um novo. A LAWTECH IA agradece.' + '</span></p>';
+    $("#chatbox").append(botHtml);
+    document.getElementById("chat-bar-bottom").scrollIntoView(true);
+    document.getElementById('btAtualizar').removeEventListener('click', finalizar_app);
+}
 
 var listener_ok = function fn () {
     textoButton = "sim";
@@ -96,56 +111,63 @@ function getHardResponse(userText) {
         };
         
         botResponse = getBotResponse(userText, 2);
-        if (botResponse != 'CNPJ inválido') {
-            userText = userText.replace("/","").replace(".","").replace("-","");
-            fetch('https://consulta-cnpj-gratis.p.rapidapi.com/office/' + userText + '?simples=false', options)
-                .then((response) => response.json())
-                .then((response) => {
+        setTimeout(() => {
 
-                    botResponse = 'CNPJ: ' + response['taxId'].replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5");
+            try{
+                var texto = document.getElementById('b_requisicao').textContent; 
+            } catch {
+                var texto = 'cnpj novo';
+            }
 
-                    exibeChat(botResponse);
-                    
-                    if (response['alias'] != null){
-                        botResponse = 'NOME: ' + response['alias'];
-                    } else {
-                        botResponse = 'NOME: ' + response['company']['name'];
-                    }
-                    exibeChat(botResponse);
-                    
-                    botResponse = 'SITUAÇÃO CADASTRAL: ' + response['status']['text'];
-                    exibeChat(botResponse);
-                    
-                    botResponse = 'CNAE: ' + response['mainActivity']['id'] + ' - ' + response['mainActivity']['text'];
-                    exibeChat(botResponse);
-                    
-                    botResponse = getBotResponse(userText, 2);
-                    exibeChat(botResponse);
-
-                    let btnconfirma = '<input type="button" class="btnOpcoes ok" value="SIM">';
-                    $("#chatbox").append(btnconfirma);
-                    let btnCancela = '<input type="button" class="btnOpcoes cancel" value="NÃO">';
-                    $("#chatbox").append(btnCancela);
-                    document.getElementById("chat-bar-bottom").scrollIntoView(true);
-
-                    var buttons_ok = document.getElementsByClassName("btnOpcoes ok");
-                    var buttons_cancel = document.getElementsByClassName("btnOpcoes cancel");
-
-                    for (let i = 0; i < buttons_ok.length; i++) {
-                        buttons_ok[i].addEventListener("click", listener_ok);
-                    }
-
-                    for (let i = 0; i < buttons_cancel.length; i++) {
-                        buttons_cancel[i].addEventListener("click", listener_cancel);
-                    }
+            if (texto != 'Esse CNPJ já existe em nossa base de dados, deseja atualizar as informações financeiras com os dados informados?') {
+                userText = userText.replace("/","").replace(".","").replace("-","");
+                fetch('https://consulta-cnpj-gratis.p.rapidapi.com/office/' + userText + '?simples=false', options)
+                    .then((response) => response.json())
+                    .then((response) => {
+    
+                        botResponse = 'CNPJ: ' + response['taxId'].replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5");
+    
+                        exibeChat(botResponse);
+                        
+                        if (response['alias'] != null){
+                            botResponse = 'NOME: ' + response['alias'];
+                        } else {
+                            botResponse = 'NOME: ' + response['company']['name'];
+                        }
+                        exibeChat(botResponse);
+                        
+                        botResponse = 'SITUAÇÃO CADASTRAL: ' + response['status']['text'];
+                        exibeChat(botResponse);
+                        
+                        botResponse = 'CNAE: ' + response['mainActivity']['id'] + ' - ' + response['mainActivity']['text'];
+                        exibeChat(botResponse);
+    
+                        let btnconfirma = '<input type="button" class="btnOpcoes ok" value="SIM">';
+                        $("#chatbox").append(btnconfirma);
+                        let btnCancela = '<input type="button" class="btnOpcoes cancel" value="NÃO">';
+                        $("#chatbox").append(btnCancela);
+                        document.getElementById("chat-bar-bottom").scrollIntoView(true);
+    
+                        var buttons_ok = document.getElementsByClassName("btnOpcoes ok");
+                        var buttons_cancel = document.getElementsByClassName("btnOpcoes cancel");
+    
+                        for (let i = 0; i < buttons_ok.length; i++) {
+                            buttons_ok[i].addEventListener("click", listener_ok);
+                        }
+    
+                        for (let i = 0; i < buttons_cancel.length; i++) {
+                            buttons_cancel[i].addEventListener("click", listener_cancel);
+                        }
+            
+                }).catch(
+                    exibeChat("Aguardando servidor...")
+                );
+            } else if (botResponse == "CNPJ inválido"){
+                exibeChat("Por favor, nos informe um CNPJ válido");
+                cont -= 1; 
+            }
+        }, 2000);
         
-            }).catch(
-                exibeChat("Aguardando servidor...")
-            );
-        } else {
-            exibeChat("Por favor, nos informe um CNPJ válido");
-            cont -= 1; 
-        }
     } else {
         botResponse = getBotResponse(userText, cont);
 
@@ -183,7 +205,7 @@ function getHardResponse(userText) {
 }
 
 function exibeChat(botResponse) {
-    let botHtml = '<p class="botText"><span>' + botResponse + '</span></p>';
+    let botHtml = '<p id="b_' + cont + '" class="botText"><span>' + botResponse + '</span></p>';
     $("#chatbox").append(botHtml);
     document.getElementById("chat-bar-bottom").scrollIntoView(true);
 }
@@ -197,7 +219,7 @@ function getResponse(tipoEntrada) {
          if (userText == "") {
              exibeChat("Por favor, o campo não pode ser vazio!!!");
         } else {
-            let userHtml = '<p class="userText"><span>' + userText + '</span></p>';
+            let userHtml = '<p id="' + cont + '" class="userText"><span>' + userText + '</span></p>';
 
             $("#textInput").val("");
             $("#chatbox").append(userHtml);
@@ -205,7 +227,7 @@ function getResponse(tipoEntrada) {
         
             setTimeout(() => {
                 getHardResponse(userText);
-            }, 1000)
+             }, 1000)
         } 
     } else {
         setTimeout(() => {

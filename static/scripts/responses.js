@@ -1,4 +1,4 @@
-
+respostass = '';
 var update = {
     "cnpj" : "",
     "nome_comercial" : "",
@@ -10,7 +10,7 @@ var update = {
 };
 
 function getBotResponse(input, numPergunta) {
-    
+    console.log("entrou aqui");
     if (numPergunta == 0){
         
         update["nome_comercial"] = input;
@@ -33,14 +33,46 @@ function getBotResponse(input, numPergunta) {
     } else if (numPergunta == 2) {
 
         if (validaCNPJ(input)) {
-            update["cnpj"] = input.replace("/","").replace(".","").replace("-","");
+            var cnpj_tratado = input.replace("/","").replace(".","").replace("-","");
+            update["cnpj"] = cnpj_tratado.replace(".","");
+            
+
+            var options = {
+                method: 'POST',
+                headers: {
+                'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(update),
+                };
+                fetch('https://lma-ia.lmarestapi.click/empresas/valida', options).then(resp => resp.text())
+                .then(r => {
+
+                        if(r != "Obrigado pelas informações. A LAWTECH IA irá analisar e assim que o processo terminar vamos retorna a você. Obrigado pela preferência."){
+                            let botHtml = '<p class="botText"><span id="b_requisicao">' + r + '</span></p>';
+                            $("#chatbox").append(botHtml);
+                            document.getElementById("chat-bar-bottom").scrollIntoView(true);
+
+                            let btnAtualizar = '<input id="btAtualizar" type="button" class="btnOpcoes ok" value="SIM">';
+                            $("#chatbox").append(btnAtualizar);
+                            let btnCancela = '<input id="btCancelar" type="button" class="btnOpcoes cancel" value="NÃO">';
+                            $("#chatbox").append(btnCancela);
+                            document.getElementById("chat-bar-bottom").scrollIntoView(true);
+                            
+                            document.getElementById('btAtualizar').addEventListener('click', atualizar_financeiro);
+                            document.getElementById('btCancelar').addEventListener('click', finalizar_app);
+                        }
+                }).catch(e => {console.log(e);});
+            
             formataCnpj(numPergunta);
             document.getElementById("textInput").type = "button";
-            return "Confira se as informações do CNPJ informado estão corretas e selecione uma opção abaixo:";
+            
         } else {
             return "CNPJ inválido";
         }
+       
+        return "terminou";
 
+        
     } else if (numPergunta == 3) {
         document.getElementById("textInput").placeholder = "";
         
@@ -76,29 +108,18 @@ function getBotResponse(input, numPergunta) {
             body: JSON.stringify(update),
             };
 
-            fetch('https://lma-ia.lmarestapi.click/empresas/valida', options).then(resp => resp.text())
-            .then(r => {
-                    let botHtml = '<p class="botText"><span>' + r + '</span></p>';
-                    $("#chatbox").append(botHtml);
-                    document.getElementById("chat-bar-bottom").scrollIntoView(true);
-                    
-                     var options = {
-                     method: 'POST',
-                     headers: {
-                     'Content-Type': 'application/json',
-                     },
-                     body: JSON.stringify(update),
-                     };
-                    if (r == 'Obrigado pelas informações. A LAWTECH IA irá analisar e assim que o processo terminar vamos retorna a você. Obrigado pela preferência.'){
-                        fetch('https://lma-ia.lmarestapi.click/empresas', options).catch(e => {console.log(e);});
-                    };
-            }).catch(e => {console.log(e);});
+            if (flag_atualizacao == 'nao')
+                fetch('https://lma-ia.lmarestapi.click/empresas', options).catch(e => {console.log(e);});
+            else {
+                fetch('https://lma-ia.lmarestapi.click/empresas/atualiza', options).catch(e => {console.log(e);});
+            }
 
-        return "terminou";
-    } 
+        return "Obrigado pelas informações. A LAWTECH IA irá analisar e assim que o processo terminar vamos retorna a você. Obrigado pela preferência.";
+    }
+
 }
 
-var listener = function fn (event){
+var function_cnpj = function fn (event){
     var x = event.target.value.replace(/\D/g, '').match(/(\d{0,2})(\d{0,3})(\d{0,3})(\d{0,4})(\d{0,2})/);
     event.target.value = !x[2] ? x[1] : x[1] + '.' + x[2] + '.' + x[3] + '/' + x[4] + (x[5] ? '-' + x[5] : '');    
 }
@@ -123,9 +144,9 @@ function onlynumber(evt) {
 function formataCnpj(numPergunta) {
 
     if (numPergunta == 1){
-        document.getElementById('textInput').addEventListener('input', listener);
+        document.getElementById('textInput').addEventListener('input', function_cnpj);
     } else {
-        document.getElementById('textInput').removeEventListener('input', listener);
+        document.getElementById('textInput').removeEventListener('input', function_cnpj);
     }
 }
 
