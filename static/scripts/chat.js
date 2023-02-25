@@ -166,7 +166,7 @@ function getHardResponse(userText) {
                 exibeChat("Por favor, nos informe um CNPJ válido");
                 cont -= 1; 
             }
-        }, 2000);
+        }, 3000);
         
     } else {
         botResponse = getBotResponse(userText, cont);
