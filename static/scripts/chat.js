@@ -166,7 +166,7 @@ function getHardResponse(userText) {
                 exibeChat("Por favor, nos informe um CNPJ válido");
                 cont -= 1; 
             }
-        }, 2500);
+        }, 3000);
         
     } else {
         botResponse = getBotResponse(userText, cont);
@@ -175,9 +175,12 @@ function getHardResponse(userText) {
             cont = 0;
         }
         
-        if ( botResponse == 'Verifique se o CNPJ está correto, e o digite novamente. (DIGITE APENAS OS NÚMEROS)'){
+        if ( botResponse == 'Verifique se o CNPJ está correto, e o digite novamente.'){
             cont = 1;
             exibeChat(botResponse);
+            formataCnpj(cont);
+            document.getElementById("textInput").type = "text";
+            document.getElementById("textInput").placeholder = "XX.XXX.XXX/XXXX-XX";
         } else {
             if (cont == 3){
                 exibeChat('Para realizar uma análise mais detalhada, por favor nos informe alguns dados...')

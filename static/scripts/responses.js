@@ -89,19 +89,16 @@ function getBotResponse(input, numPergunta) {
 
         document.getElementById("textInput").addEventListener('input', moeda);
         
-        return "Qual a receita líquida aproximada? Caso não souber, basta digitar 0.";
-    } else if (numPergunta == 5) {
-        update["receita_liquida"] = input;
-        return "Qual o faturamento anual aproximado? Caso não souber, basta digitar 0.";
-    } else if (numPergunta == 6) {
+        return "Qual a receita líquida anual aproximada? Caso não souber, basta digitar 0.";
+    }   else if (numPergunta == 5) {
         update["faturamento_anual"] = input;
         document.getElementById("textInput").removeEventListener('input', moeda);
         return "Qual a quantidade de funcionários aproximada? Caso não souber, basta digitar 0.";
-    } else if (numPergunta == 7) {
+    } else if (numPergunta == 6) {
         update["qtd_funcionarios"] = input;
         document.getElementById("textInput").addEventListener('input', moeda);
-        return "Qual o valor da folha de pagamento aproximada? Caso não souber, basta digitar 0.";
-    } else if (numPergunta == 8) {
+        return "Qual o valor da folha de pagamento anual aproximada? Caso não souber, basta digitar 0.";
+    } else if (numPergunta == 7) {
         update["folha_salarial"] = input;
 
         var options = {
